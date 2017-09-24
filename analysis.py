@@ -53,10 +53,10 @@ def get_mel(stft_m, n_mels=80):
     return tmp.T
 
 class AnalysisToolBase(object):
-    def __init__(self, corpus_root, fs, frame_shift, frame_length, n_fft, window_type):
+    def __init__(self, fs, frame_shift, frame_length, n_fft, window_type):
         frame_shift_dots = int(frame_shift * fs)
         frame_length_dots = int(frame_length * fs)
-        self.__meta = dict(corpus_root=corpus_root, fs=fs, frame_shift=frame_shift, frame_length=frame_length,
+        self.__meta = dict(fs=fs, frame_shift=frame_shift, frame_length=frame_length,
                            frame_shift_dots=frame_shift_dots, frame_length_dots=frame_length_dots,
                            n_fft=n_fft, window_type=window_type)
 
