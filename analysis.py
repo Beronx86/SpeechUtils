@@ -71,16 +71,17 @@ class AnalysisToolBase(object):
 class GLA(AnalysisToolBase):
     """Griffin-Lim Vocoder
     """
-    def __init__(self, *args, pre_emphasis_coef=0.97):
+    def __init__(self, *args, n_mels=80, pre_emphasis_coef=0.97):
         """
         :param args:
         :param pre_emphasis_coef:
         """
         super(GLA, self).__init__(*args)
-        self.__mel_filter = librosa.filters.mel(sr=self.meta.get('fs'),
-                                                n_fft=self.meta.get('n_fft'), n_mels=self.meta.get('n_mel'))
-        self.__mel_filter = np.transpose(self.__mel_filter, (1, 0))
+        self.__meta['n_mels'] = n_mels
         self.__meta['pre_emphasis'] = pre_emphasis_coef
+        self.__mel_filter = librosa.filters.mel(sr=self.meta.get('fs'),
+                                                n_fft=self.meta.get('n_fft'), n_mels=self.meta.get('n_mels'))
+        self.__mel_filter = np.transpose(self.__mel_filter, (1, 0))
 
     def extract(self, file_path):
         """
