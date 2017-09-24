@@ -56,13 +56,9 @@ class AnalysisToolBase(object):
     def __init__(self, fs, frame_shift, frame_length, n_fft, window_type):
         frame_shift_dots = int(frame_shift * fs)
         frame_length_dots = int(frame_length * fs)
-        self.__meta = dict(fs=fs, frame_shift=frame_shift, frame_length=frame_length,
-                           frame_shift_dots=frame_shift_dots, frame_length_dots=frame_length_dots,
-                           n_fft=n_fft, window_type=window_type)
-
-    @property
-    def meta(self):
-        return self.__meta
+        self.meta = dict(fs=fs, frame_shift=frame_shift, frame_length=frame_length,
+                         frame_shift_dots=frame_shift_dots, frame_length_dots=frame_length_dots,
+                         n_fft=n_fft, window_type=window_type)
 
     def save_as_json(self, file_path):
         with open(file_path, "w") as f:
@@ -77,9 +73,8 @@ class GLA(AnalysisToolBase):
         :param pre_emphasis_coef:
         """
         super(GLA, self).__init__(*args)
-        self.__meta = super(GLA, self).__meta
-        self.__meta['n_mels'] = n_mels
-        self.__meta['pre_emphasis'] = pre_emphasis_coef
+        self.meta['n_mels'] = n_mels
+        self.meta['pre_emphasis'] = pre_emphasis_coef
         self.__mel_filter = librosa.filters.mel(sr=self.meta.get('fs'),
                                                 n_fft=self.meta.get('n_fft'), n_mels=self.meta.get('n_mels'))
         self.__mel_filter = np.transpose(self.__mel_filter, (1, 0))
