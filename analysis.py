@@ -77,6 +77,7 @@ class GLA(AnalysisToolBase):
         :param pre_emphasis_coef:
         """
         super(GLA, self).__init__(*args)
+        self.__meta = super(GLA, self).__meta
         self.__meta['n_mels'] = n_mels
         self.__meta['pre_emphasis'] = pre_emphasis_coef
         self.__mel_filter = librosa.filters.mel(sr=self.meta.get('fs'),
