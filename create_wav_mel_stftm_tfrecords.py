@@ -96,7 +96,7 @@ def read_to_bytes(path, stats, sr, frame_shift, frame_size, n_fft, window, mel_f
     example = tf.train.Example(features=tf.train.Features(feature={
         "sr": _int64_feature(sr),
         "key": _bytes_feature(key),
-        "frames": _int64_feature(frames)
+        "frames": _int64_feature(frames),
         "wav_raw": _bytes_feature(wav_raw),
         "norm_stftm_raw": _bytes_feature(norm_stftm_raw),
         "norm_mel_raw": _bytes_feature(norm_mel_raw)}))
