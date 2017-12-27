@@ -141,7 +141,7 @@ def main():
         for path in tqdm.tqdm(path_lst):
             example_str = read_to_bytes(path=path, stats=stats, sr=args.sr,
                                         frame_shift=args.frame_shift, frame_size=args.frame_size,
-
+                                        n_fft=args.n_fft, window=args.window,
                                         mel_filterbank=mel_filterbank, floor_gate=args.floor_gate)
             writer.write(example_str)
 
