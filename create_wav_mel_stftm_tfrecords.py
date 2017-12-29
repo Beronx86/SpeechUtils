@@ -13,7 +13,7 @@ def get_arguments():
     parser = argparse.ArgumentParser(description="Convert wav file to TFRecords file.")
 
     parser.add_argument("--wav_root", "-s", type=str, default="./wav", help="")
-    parser.add_argument("--target_path", "-d", type=str, default="./wav.tfrecords", help="")
+    parser.add_argument("--target_path", "-d", type=str, default="./wav_mel_stftm.tfrecords", help="")
     parser.add_argument("--stats_path", type=str, default="./stats.pkl", help="where to store the norm coefs.")
     parser.add_argument("--sr", type=int, default=16000, help="")
     parser.add_argument("--frame_shift", type=float, default=0.0125, help="")
@@ -30,8 +30,8 @@ def get_arguments():
 
 
 def get_stftm(wav, sr, frame_shift, frame_size, n_fft, window):
-    tmp = np.abs(librosa.core.stft(y=wav, n_fft=n_fft, hop_length=int(frame_shift*sr),
-                                   win_length=int(frame_size*sr), window=window))
+    tmp = np.abs(librosa.core.stft(y=wav, n_fft=n_fft, hop_length=int(frame_shift * sr),
+                                   win_length=int(frame_size * sr), window=window))
     return tmp.T
 
 
@@ -145,10 +145,8 @@ def main():
                                         mel_filterbank=mel_filterbank, floor_gate=args.floor_gate)
             writer.write(example_str)
 
-
     print("Congratulations!")
 
 
 if __name__ == "__main__":
     main()
-
