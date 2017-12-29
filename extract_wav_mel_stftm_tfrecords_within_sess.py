@@ -54,6 +54,7 @@ def main():
     while True:
         try:
             print(sess.run(tf.shape(next_item["norm_mel"])))
+            #print(sess.run(next_item["norm_mel"])[0])
         except Exception as e:
             print(e)
 

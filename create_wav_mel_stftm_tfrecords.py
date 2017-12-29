@@ -90,13 +90,13 @@ def read_to_bytes(path, stats, sr, frame_shift, frame_size, n_fft, window, mel_f
     key = path.encode("utf-8")
     wav_raw = this_wav.tostring()
     frames = norm_mel.shape[0]
-    norm_stftm_raw = norm_stftm.tostring()
-    norm_mel_raw = norm_mel.tostring()
+    norm_stftm_raw = norm_stftm.astype(np.float32).tostring()
+    norm_mel_raw = norm_mel.astype(np.float32).tostring()
     # create tf example feature
     example = tf.train.Example(features=tf.train.Features(feature={
-        "sr": _int64_feature(sr),
+        "sr": _int64_feature(int(sr)),
         "key": _bytes_feature(key),
-        "frames": _int64_feature(frames),
+        "frames": _int64_feature(int(frames)),
         "wav_raw": _bytes_feature(wav_raw),
         "norm_stftm_raw": _bytes_feature(norm_stftm_raw),
         "norm_mel_raw": _bytes_feature(norm_mel_raw)}))
@@ -139,11 +139,14 @@ def main():
     # 5th. extract features, normalize them and write them back to disk.
     with tf.python_io.TFRecordWriter(args.target_path) as writer:
         for path in tqdm.tqdm(path_lst):
-            example_str = read_to_bytes(path=path, stats=stats, sr=args.sr,
-                                        frame_shift=args.frame_shift, frame_size=args.frame_size,
-                                        n_fft=args.n_fft, window=args.window,
-                                        mel_filterbank=mel_filterbank, floor_gate=args.floor_gate)
-            writer.write(example_str)
+            try:
+                example_str = read_to_bytes(path=path, stats=stats, sr=args.sr,
+                                            frame_shift=args.frame_shift, frame_size=args.frame_size,
+                                            n_fft=args.n_fft, window=args.window,
+                                            mel_filterbank=mel_filterbank, floor_gate=args.floor_gate)
+                writer.write(example_str)
+            except ValueError as e:
+                print(e, path)
 
     print("Congratulations!")
 
